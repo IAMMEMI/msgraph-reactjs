@@ -87,7 +87,7 @@ class NewEvent extends React.Component {
               content: this.state.body,
             }
           : undefined,
-      isOnlineMeeting: true,
+      //isOnlineMeeting: true,
     };
 
     try {

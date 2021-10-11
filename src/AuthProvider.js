@@ -1,8 +1,9 @@
+/* eslint-disable import/no-anonymous-default-export */
 import React from "react";
 import { PublicClientApplication } from "@azure/msal-browser";
 
 import { config } from "./Config";
-import { getUserDetails } from "./GraphService";
+import { getUserDetails, getUserMailBoxSettings } from "./GraphService";
 
 export default (WrappedComponent) =>
   class AuthProvider extends React.Component {
@@ -108,7 +109,6 @@ export default (WrappedComponent) =>
       }
     }
 
-    // <getUserProfileSnippet>
     async getUserProfile() {
       try {
         var accessToken = await this.getAccessToken(config.scopes);
@@ -116,6 +116,9 @@ export default (WrappedComponent) =>
         if (accessToken) {
           // Get the user's profile from Graph
           var user = await getUserDetails(accessToken);
+          // debug timeZone
+          // if (!user.mailboxSettings?.timeZone) await this.getMailBoxSettings();
+
           this.setState({
             isAuthenticated: true,
             user: {
@@ -135,7 +138,20 @@ export default (WrappedComponent) =>
         });
       }
     }
-    // </getUserProfileSnippet>
+
+    async getMailBoxSettings() {
+      try {
+        var accessToken = await this.getAccessToken(config.scopes);
+
+        if (accessToken) {
+          // Get the user's profile from Graph
+          var mailboxSettings = await getUserMailBoxSettings(accessToken);
+          console.log("mailboxSettings", mailboxSettings);
+        }
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
 
     setErrorMessage(message, debug) {
       this.setState({

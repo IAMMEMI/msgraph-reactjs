@@ -27,8 +27,17 @@ export async function getUserDetails(accessToken) {
   return user;
 }
 
+export async function getUserMailBoxSettings(accessToken) {
+  const client = getAuthenticatedClient(accessToken);
+
+  const user = await client
+    .api('/me/mailboxSettings')
+    .get();
+
+  return user;
+}
+
 export async function getUserWeekCalendar(accessToken, timeZone, startDate) {
-  console.log('test')
   const client = getAuthenticatedClient(accessToken);
 
   // Generate startDateTime and endDateTime query params
